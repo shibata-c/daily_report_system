@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import models.Client;
 import models.Report;
 import models.validators.ReportValidator;
 import utils.DBUtil;
@@ -45,7 +46,13 @@ public class ReportsUpdateServlet extends HttpServlet {
             r.setReport_date(Date.valueOf(request.getParameter("report_date")));
             r.setTitle(request.getParameter("title"));
             r.setContent(request.getParameter("content"));
+
+            r.setClient_name(request.getParameter("client_name"));
+
+            r.setClient_content(request.getParameter("client_content"));
             r.setUpdated_at(new Timestamp(System.currentTimeMillis()));
+
+            List<Client> clients = em.createNamedQuery("getAllClients", Client.class).getResultList();
 
             List<String> errors = ReportValidator.validate(r);
             if(errors.size() > 0) {
@@ -53,7 +60,7 @@ public class ReportsUpdateServlet extends HttpServlet {
 
                 request.setAttribute("_token", request.getSession().getId());
                 request.setAttribute("report", r);
-                request.setAttribute("errors", errors);
+                request.setAttribute("errors", errors);;
 
                 RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/views/reports/edit.jsp");
                 rd.forward(request, response);
@@ -61,6 +68,8 @@ public class ReportsUpdateServlet extends HttpServlet {
                 em.getTransaction().begin();
                 em.getTransaction().commit();
                 em.close();
+
+                request.setAttribute("clients", clients);
                 request.getSession().setAttribute("flush", "更新が完了しました。");
 
                 request.getSession().removeAttribute("report_id");

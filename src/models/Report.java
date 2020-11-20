@@ -61,6 +61,41 @@ public class Report {
     @Column(name = "updated_at", nullable = false)
     private Timestamp updated_at;
 
+    @Column(name = "iine_count", nullable = true)
+    private Integer iine_count = 0;
+
+    @Column(name = "client_name",nullable = true)
+    private String client_name;
+
+    @Column(name = "client_content",nullable = false)
+    private String client_content;
+
+
+
+    public String getClient_name() {
+        return client_name;
+    }
+
+    public void setClient_name(String client_name) {
+        this.client_name = client_name;
+    }
+
+    public String getClient_content() {
+        return client_content;
+    }
+
+    public void setClient_content(String client_content) {
+        this.client_content = client_content;
+    }
+
+    public Integer getIine_count() {
+        return iine_count;
+    }
+
+    public void setIine_count(Integer iine_count) {
+        this.iine_count = iine_count;
+    }
+
     public Integer getId() {
         return id;
     }

@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import models.Client;
 import models.Employee;
 import models.Report;
 import models.validators.ReportValidator;
@@ -55,10 +56,14 @@ public class ReportsCreateServlet extends HttpServlet {
 
             r.setTitle(request.getParameter("title"));
             r.setContent(request.getParameter("content"));
+            r.setClient_content(request.getParameter("client_content"));
 
             Timestamp currentTime = new Timestamp(System.currentTimeMillis());
             r.setCreated_at(currentTime);
             r.setUpdated_at(currentTime);
+
+            List<Client> clients = em.createNamedQuery("getAllClients", Client.class).getResultList();
+
 
             List<String> errors = ReportValidator.validate(r);
             if(errors.size() > 0) {
@@ -75,6 +80,7 @@ public class ReportsCreateServlet extends HttpServlet {
                 em.persist(r);
                 em.getTransaction().commit();
                 em.close();
+                request.setAttribute("clients", clients);
                 request.getSession().setAttribute("flush", "登録が完了しました。");
 
                 response.sendRedirect(request.getContextPath() + "/reports/index");
