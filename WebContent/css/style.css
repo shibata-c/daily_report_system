@@ -192,7 +192,8 @@ table#report_list .client_name{
 
 pre {
     font-family:"Hiragino Kaku Gothic Pro",Meiryo,"MS PGothic",Helvetica,Arial,sans-serif;
-    width:20%;
+    width:100%;
+    white-space: pre-wrap ;
 }
 
 .show_td{
